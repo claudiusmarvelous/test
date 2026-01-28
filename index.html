@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Salary Calculator 2025/26</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0071e3;
+            --primary-hover: #0077ED;
+            --bg-primary: #fbfbfd;
+            --bg-secondary: #f5f5f7;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --text-primary: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #86868b;
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --gradient-blue: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-green: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --gradient-orange: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-purple: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --income-color: #34c759;
+            --tax-color: #ff3b30;
+            --ni-color: #ff9500;
+            --pension-color: #5856d6;
+            --student-loan-color: #af52de;
+            --take-home-color: #007aff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(251, 251, 253, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: var(--gradient-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .tax-year-badge {
+            background: var(--bg-secondary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 24px 60px;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 8vw, 64px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #6e6e73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 21px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding: 40px 0 80px;
+        }
+
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            padding: 24px 28px 0;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        .card-body {
+            padding: 24px 28px 28px;
+        }
+
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        .input-field {
+            width: 100%;
+            height: 56px;
+            padding: 0 16px;
+            font-size: 18px;
+            font-weight: 500;
+            font-family: inherit;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .input-field.has-prefix {
+            padding-left: 36px;
+        }
+
+        .input-field:hover {
+            background: #ececee;
+        }
+
+        .input-field:focus {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Salary Input Large */
+        .salary-input-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .salary-input {
+            width: 100%;
+            height: 80px;
+            padding: 0 24px 0 48px;
+            font-size: 36px;
+            font-weight: 600;
+            font-family: inherit;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .salary-input:hover {
+            background: #ececee;
+        }
+
+        .salary-input:focus {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .salary-prefix {
+            position: absolute;
+            left: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            pointer-events: none;
+        }
+
+        /* Period Selector */
+        .period-selector {
+            display: flex;
+            gap: 8px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: var(--radius-sm);
+        }
+
+        .period-btn {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .period-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .period-btn.active {
+            background: white;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Select */
+        .select-field {
+            width: 100%;
+            height: 50px;
+            padding: 0 40px 0 16px;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: inherit;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .select-field:hover {
+            background-color: #ececee;
+        }
+
+        .select-field:focus {
+            background-color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        /* Accordion */
+        .accordion {
+            border-top: 1px solid var(--border);
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .accordion-header:hover .accordion-title {
+            color: var(--primary);
+        }
+
+        .accordion-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: color 0.2s ease;
+        }
+
+        .accordion-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-item.open .accordion-content {
+            max-height: 500px;
+        }
+
+        .accordion-body {
+            padding-bottom: 20px;
+        }
+
+        /* Toggle Switch */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+        }
+
+        .toggle-label {
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .toggle-sublabel {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 51px;
+            height: 31px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e9e9eb;
+            transition: 0.3s;
+            border-radius: 31px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 27px;
+            width: 27px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: var(--income-color);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Inline Input */
+        .inline-input-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .inline-input {
+            width: 100px;
+            height: 44px;
+            padding: 0 12px;
+            font-size: 16px;
+            font-weight: 500;
+            font-family: inherit;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-primary);
+            text-align: center;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .inline-input:focus {
+            background: white;
+            border-color: var(--primary);
+        }
+
+        .inline-select {
+            height: 44px;
+            padding: 0 32px 0 12px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .inline-select:focus {
+            background-color: white;
+            border-color: var(--primary);
+        }
+
+        /* Results Card */
+        .results-card {
+            position: sticky;
+            top: 68px;
+        }
+
+        .take-home-display {
+            text-align: center;
+            padding: 40px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .take-home-label {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .take-home-amount {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .take-home-period {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        /* Period Breakdown */
+        .period-breakdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .period-item {
+            background: white;
+            padding: 16px 12px;
+            text-align: center;
+        }
+
+        .period-item-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .period-item-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Breakdown List */
+        .breakdown-list {
+            padding: 20px 28px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-item.total {
+            padding-top: 20px;
+            margin-top: 8px;
+            border-top: 2px solid var(--border);
+            border-bottom: none;
+        }
+
+        .breakdown-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .breakdown-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .breakdown-label {
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .breakdown-item.total .breakdown-label {
+            font-weight: 600;
+        }
+
+        .breakdown-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .breakdown-value.negative {
+            color: var(--tax-color);
+        }
+
+        .breakdown-value.positive {
+            color: var(--income-color);
+        }
+
+        /* Chart */
+        .chart-container {
+            padding: 24px 28px;
+            border-top: 1px solid var(--border);
+        }
+
+        .chart-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .donut-chart {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .donut-chart svg {
+            transform: rotate(-90deg);
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .donut-center-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Tax Band Visualization */
+        .tax-bands-container {
+            padding: 24px 28px;
+            border-top: 1px solid var(--border);
+        }
+
+        .tax-band {
+            margin-bottom: 16px;
+        }
+
+        .tax-band:last-child {
+            margin-bottom: 0;
+        }
+
+        .tax-band-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .tax-band-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .tax-band-amount {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .tax-band-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .tax-band-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .footer-link {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px 40px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .main-content {
+                padding: 24px 0 60px;
+            }
+
+            .card-header, .card-body {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .take-home-display {
+                padding: 32px 20px;
+            }
+
+            .take-home-amount {
+                font-size: 40px;
+            }
+
+            .salary-input {
+                height: 70px;
+                font-size: 28px;
+            }
+
+            .salary-prefix {
+                font-size: 28px;
+            }
+
+            .period-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .breakdown-list, .chart-container, .tax-bands-container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .results-card {
+                position: static;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Info tooltip */
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background: var(--bg-secondary);
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            cursor: help;
+            margin-left: 6px;
+            position: relative;
+        }
+
+        .info-icon:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 400;
+            white-space: nowrap;
+            z-index: 100;
+            max-width: 250px;
+            white-space: normal;
+            text-align: left;
+        }
+
+        /* Effective rate badge */
+        .effective-rate {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+
+        /* Marginal rate notice */
+        .marginal-notice {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.1) 0%, rgba(255, 59, 48, 0.1) 100%);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .marginal-notice-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .marginal-notice-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .marginal-rate-value {
+            font-weight: 700;
+            color: var(--tax-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">UK</div>
+                    Salary Calculator
+                </div>
+                <select id="taxYearSelect" class="tax-year-badge" style="border: none; cursor: pointer; appearance: none; background: var(--bg-secondary) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\") no-repeat right 12px center; padding-right: 28px; outline: none;">
+                    <option value="2025" selected>2025/26</option>
+                    <option value="2024">2024/25</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="animate-in">Know Your Take-Home</h1>
+            <p class="animate-in delay-1">Calculate your UK salary after tax, National Insurance, pension contributions, and student loan repayments. Accurate figures for the 2025/26 tax year.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="main-content">
+            <!-- Input Card -->
+            <div class="card animate-in delay-2">
+                <div class="card-header">
+                    <h2 class="card-title">Your Salary</h2>
+                    <p class="card-subtitle">Enter your gross salary details</p>
+                </div>
+                <div class="card-body">
+                    <div class="salary-input-container">
+                        <span class="salary-prefix">£</span>
+                        <input type="text" id="salary" class="salary-input" placeholder="50,000" inputmode="numeric">
+                    </div>
+
+                    <div class="period-selector">
+                        <button type="button" class="period-btn active" data-period="yearly">Yearly</button>
+                        <button type="button" class="period-btn" data-period="monthly">Monthly</button>
+                        <button type="button" class="period-btn" data-period="weekly">Weekly</button>
+                    </div>
+
+                    <div class="accordion" style="margin-top: 32px;">
+                        <!-- Location -->
+                        <div class="accordion-item open">
+                            <div class="accordion-header">
+                                <span class="accordion-title">Tax Region</span>
+                                <span class="accordion-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    <select id="taxRegion" class="select-field">
+                                        <option value="england">England, Wales & Northern Ireland</option>
+                                        <option value="scotland">Scotland</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pension -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span class="accordion-title">Pension Contributions</span>
+                                <span class="accordion-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    <div class="toggle-row">
+                                        <div>
+                                            <div class="toggle-label">Contribute to pension</div>
+                                            <div class="toggle-sublabel">Workplace or personal pension</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="pensionEnabled">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div id="pensionOptions" style="display: none;">
+                                        <div class="inline-input-group">
+                                            <input type="text" id="pensionAmount" class="inline-input" value="5" placeholder="5">
+                                            <select id="pensionType" class="inline-select">
+                                                <option value="percentage">% of salary</option>
+                                                <option value="fixed">£ per month</option>
+                                            </select>
+                                        </div>
+                                        <div class="toggle-row" style="margin-top: 16px;">
+                                            <div>
+                                                <div class="toggle-label">Salary sacrifice</div>
+                                                <div class="toggle-sublabel">Saves on NI contributions</div>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="salarySacrifice">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Student Loan -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span class="accordion-title">Student Loan</span>
+                                <span class="accordion-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    <select id="studentLoan" class="select-field">
+                                        <option value="none">No student loan</option>
+                                        <option value="plan1">Plan 1 (before Sept 2012)</option>
+                                        <option value="plan2">Plan 2 (Sept 2012 onwards)</option>
+                                        <option value="plan4">Plan 4 (Scotland)</option>
+                                        <option value="plan5">Plan 5 (from Aug 2023)</option>
+                                        <option value="postgrad">Postgraduate Loan</option>
+                                    </select>
+                                    <div class="toggle-row" style="margin-top: 16px;">
+                                        <div>
+                                            <div class="toggle-label">Additional postgraduate loan</div>
+                                            <div class="toggle-sublabel">If you also have a PG loan</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="hasPostgrad">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other Options -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span class="accordion-title">Additional Options</span>
+                                <span class="accordion-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    <div class="toggle-row">
+                                        <div>
+                                            <div class="toggle-label">Blind Person's Allowance</div>
+                                            <div class="toggle-sublabel">Additional £3,130 tax-free allowance</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="blindAllowance">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-row">
+                                        <div>
+                                            <div class="toggle-label">No NI (State Pension Age)</div>
+                                            <div class="toggle-sublabel">Over state pension age</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="noNI">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-row">
+                                        <div>
+                                            <div class="toggle-label">Married couple's allowance</div>
+                                            <div class="toggle-sublabel">If married before 5 Dec 2005</div>
+                                        </div>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="marriedAllowance">
+                                            <span class="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bonuses & Overtime -->
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <span class="accordion-title">Bonuses & Overtime</span>
+                                <span class="accordion-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="accordion-body">
+                                    <div class="input-group">
+                                        <label class="input-label">Annual Bonus</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-prefix">£</span>
+                                            <input type="text" id="bonus" class="input-field has-prefix" placeholder="0" inputmode="numeric">
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="input-label">Monthly Overtime</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-prefix">£</span>
+                                            <input type="text" id="overtime" class="input-field has-prefix" placeholder="0" inputmode="numeric">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Card -->
+            <div class="card results-card animate-in delay-3">
+                <div class="take-home-display">
+                    <div class="take-home-label">Your Take-Home Pay</div>
+                    <div class="take-home-amount" id="takeHomeAmount">£0</div>
+                    <div class="take-home-period" id="takeHomePeriod">per year</div>
+                    <div class="effective-rate" id="effectiveRate">0% effective tax rate</div>
+                </div>
+
+                <div class="period-breakdown">
+                    <div class="period-item">
+                        <div class="period-item-label">Yearly</div>
+                        <div class="period-item-value" id="yearlyNet">£0</div>
+                    </div>
+                    <div class="period-item">
+                        <div class="period-item-label">Monthly</div>
+                        <div class="period-item-value" id="monthlyNet">£0</div>
+                    </div>
+                    <div class="period-item">
+                        <div class="period-item-label">Weekly</div>
+                        <div class="period-item-value" id="weeklyNet">£0</div>
+                    </div>
+                    <div class="period-item">
+                        <div class="period-item-label">Hourly</div>
+                        <div class="period-item-value" id="hourlyNet">£0</div>
+                    </div>
+                </div>
+
+                <div class="breakdown-list">
+                    <div class="breakdown-item">
+                        <div class="breakdown-left">
+                            <div class="breakdown-dot" style="background: var(--income-color);"></div>
+                            <span class="breakdown-label">Gross Salary</span>
+                        </div>
+                        <span class="breakdown-value positive" id="grossDisplay">£0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-left">
+                            <div class="breakdown-dot" style="background: var(--tax-color);"></div>
+                            <span class="breakdown-label">Income Tax</span>
+                        </div>
+                        <span class="breakdown-value negative" id="taxDisplay">-£0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-left">
+                            <div class="breakdown-dot" style="background: var(--ni-color);"></div>
+                            <span class="breakdown-label">National Insurance</span>
+                        </div>
+                        <span class="breakdown-value negative" id="niDisplay">-£0</span>
+                    </div>
+                    <div class="breakdown-item" id="pensionRow" style="display: none;">
+                        <div class="breakdown-left">
+                            <div class="breakdown-dot" style="background: var(--pension-color);"></div>
+                            <span class="breakdown-label">Pension</span>
+                        </div>
+                        <span class="breakdown-value negative" id="pensionDisplay">-£0</span>
+                    </div>
+                    <div class="breakdown-item" id="studentLoanRow" style="display: none;">
+                        <div class="breakdown-left">
+                            <div class="breakdown-dot" style="background: var(--student-loan-color);"></div>
+                            <span class="breakdown-label">Student Loan</span>
+                        </div>
+                        <span class="breakdown-value negative" id="studentLoanDisplay">-£0</span>
+                    </div>
+                    <div class="breakdown-item total">
+                        <div class="breakdown-left">
+                            <div class="breakdown-dot" style="background: var(--take-home-color);"></div>
+                            <span class="breakdown-label">Take-Home Pay</span>
+                        </div>
+                        <span class="breakdown-value positive" id="netDisplay">£0</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Salary Breakdown</div>
+                    <div class="donut-chart">
+                        <svg width="180" height="180" viewBox="0 0 180 180" id="donutChart">
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="var(--bg-secondary)" stroke-width="24"/>
+                        </svg>
+                        <div class="donut-center">
+                            <div class="donut-center-value" id="takeHomePercent">0%</div>
+                            <div class="donut-center-label">take-home</div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--take-home-color);"></div>
+                            <span>Take-Home</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--tax-color);"></div>
+                            <span>Tax</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background: var(--ni-color);"></div>
+                            <span>NI</span>
+                        </div>
+                        <div class="legend-item" id="pensionLegend" style="display: none;">
+                            <div class="legend-dot" style="background: var(--pension-color);"></div>
+                            <span>Pension</span>
+                        </div>
+                        <div class="legend-item" id="studentLoanLegend" style="display: none;">
+                            <div class="legend-dot" style="background: var(--student-loan-color);"></div>
+                            <span>Student Loan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tax-bands-container">
+                    <div class="chart-title">Tax Bands Used</div>
+                    <div id="taxBandsViz"></div>
+                </div>
+
+                <div id="marginalNotice" class="marginal-notice" style="display: none; margin: 0 28px 28px;">
+                    <div class="marginal-notice-title">Marginal Rate Warning</div>
+                    <div class="marginal-notice-text">Your next £1 earned will be taxed at <span class="marginal-rate-value" id="marginalRateValue">0%</span> due to personal allowance tapering.</div>
+                </div>
+
+                <div id="regionComparison" class="region-comparison" style="display: none; margin: 0 28px 28px; padding: 16px; background: linear-gradient(135deg, rgba(0, 122, 255, 0.08) 0%, rgba(88, 86, 214, 0.08) 100%); border-radius: var(--radius-sm);">
+                    <div class="comparison-title" style="font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Scotland vs Rest of UK</div>
+                    <div class="comparison-text" style="font-size: 13px; color: var(--text-secondary);" id="comparisonText"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">Tax calculations based on HMRC rates for 2025/26. This calculator provides estimates only.</p>
+                <div class="footer-links">
+                    <a href="https://www.gov.uk/income-tax-rates" target="_blank" rel="noopener" class="footer-link">Gov.UK Tax Rates</a>
+                    <a href="https://www.gov.uk/national-insurance-rates-letters" target="_blank" rel="noopener" class="footer-link">NI Rates</a>
+                    <a href="https://www.gov.uk/repaying-your-student-loan" target="_blank" rel="noopener" class="footer-link">Student Loans</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // UK Tax Calculator - Supporting multiple tax years
+        // Based on Gov.UK official rates
+
+        // Tax configurations by year
+        const TAX_CONFIGS = {
+            '2025': {
+                year: '2025/26',
+                personalAllowance: 12570,
+                personalAllowanceTaper: 100000,
+                blindPersonsAllowance: 3130,
+                marriedCouplesAllowance: 1260,
+
+                england: {
+                    bands: [
+                        { name: 'Personal Allowance', rate: 0, from: 0, to: 12570, color: '#34c759' },
+                        { name: 'Basic Rate', rate: 0.20, from: 12571, to: 50270, color: '#ff9500' },
+                        { name: 'Higher Rate', rate: 0.40, from: 50271, to: 125140, color: '#ff3b30' },
+                        { name: 'Additional Rate', rate: 0.45, from: 125141, to: Infinity, color: '#af52de' }
+                    ]
+                },
+
+                scotland: {
+                    bands: [
+                        { name: 'Personal Allowance', rate: 0, from: 0, to: 12570, color: '#34c759' },
+                        { name: 'Starter Rate', rate: 0.19, from: 12571, to: 14876, color: '#30d158' },
+                        { name: 'Basic Rate', rate: 0.20, from: 14877, to: 26561, color: '#ffcc00' },
+                        { name: 'Intermediate Rate', rate: 0.21, from: 26562, to: 43662, color: '#ff9500' },
+                        { name: 'Higher Rate', rate: 0.42, from: 43663, to: 75000, color: '#ff3b30' },
+                        { name: 'Advanced Rate', rate: 0.45, from: 75001, to: 125140, color: '#ff2d55' },
+                        { name: 'Top Rate', rate: 0.48, from: 125141, to: Infinity, color: '#af52de' }
+                    ]
+                },
+
+                ni: {
+                    primaryThreshold: 12570,
+                    upperEarningsLimit: 50270,
+                    rateBelowUEL: 0.08,
+                    rateAboveUEL: 0.02
+                },
+
+                studentLoans: {
+                    plan1: { threshold: 26065, rate: 0.09 },
+                    plan2: { threshold: 28470, rate: 0.09 },
+                    plan4: { threshold: 31395, rate: 0.09 },
+                    plan5: { threshold: 25000, rate: 0.09 },
+                    postgrad: { threshold: 21000, rate: 0.06 }
+                }
+            },
+            '2024': {
+                year: '2024/25',
+                personalAllowance: 12570,
+                personalAllowanceTaper: 100000,
+                blindPersonsAllowance: 3070,
+                marriedCouplesAllowance: 1260,
+
+                england: {
+                    bands: [
+                        { name: 'Personal Allowance', rate: 0, from: 0, to: 12570, color: '#34c759' },
+                        { name: 'Basic Rate', rate: 0.20, from: 12571, to: 50270, color: '#ff9500' },
+                        { name: 'Higher Rate', rate: 0.40, from: 50271, to: 125140, color: '#ff3b30' },
+                        { name: 'Additional Rate', rate: 0.45, from: 125141, to: Infinity, color: '#af52de' }
+                    ]
+                },
+
+                scotland: {
+                    bands: [
+                        { name: 'Personal Allowance', rate: 0, from: 0, to: 12570, color: '#34c759' },
+                        { name: 'Starter Rate', rate: 0.19, from: 12571, to: 14732, color: '#30d158' },
+                        { name: 'Basic Rate', rate: 0.20, from: 14733, to: 25688, color: '#ffcc00' },
+                        { name: 'Intermediate Rate', rate: 0.21, from: 25689, to: 43662, color: '#ff9500' },
+                        { name: 'Higher Rate', rate: 0.42, from: 43663, to: 75000, color: '#ff3b30' },
+                        { name: 'Advanced Rate', rate: 0.45, from: 75001, to: 125140, color: '#ff2d55' },
+                        { name: 'Top Rate', rate: 0.48, from: 125141, to: Infinity, color: '#af52de' }
+                    ]
+                },
+
+                ni: {
+                    primaryThreshold: 12570,
+                    upperEarningsLimit: 50270,
+                    rateBelowUEL: 0.08,
+                    rateAboveUEL: 0.02
+                },
+
+                studentLoans: {
+                    plan1: { threshold: 24990, rate: 0.09 },
+                    plan2: { threshold: 27295, rate: 0.09 },
+                    plan4: { threshold: 31395, rate: 0.09 },
+                    plan5: { threshold: 25000, rate: 0.09 },
+                    postgrad: { threshold: 21000, rate: 0.06 }
+                }
+            }
+        };
+
+        let currentTaxYear = '2025';
+        let TAX_CONFIG = TAX_CONFIGS[currentTaxYear];
+
+        // DOM Elements
+        const elements = {
+            taxYearSelect: document.getElementById('taxYearSelect'),
+            salary: document.getElementById('salary'),
+            taxRegion: document.getElementById('taxRegion'),
+            pensionEnabled: document.getElementById('pensionEnabled'),
+            pensionOptions: document.getElementById('pensionOptions'),
+            pensionAmount: document.getElementById('pensionAmount'),
+            pensionType: document.getElementById('pensionType'),
+            salarySacrifice: document.getElementById('salarySacrifice'),
+            studentLoan: document.getElementById('studentLoan'),
+            hasPostgrad: document.getElementById('hasPostgrad'),
+            blindAllowance: document.getElementById('blindAllowance'),
+            noNI: document.getElementById('noNI'),
+            marriedAllowance: document.getElementById('marriedAllowance'),
+            bonus: document.getElementById('bonus'),
+            overtime: document.getElementById('overtime'),
+
+            // Results
+            takeHomeAmount: document.getElementById('takeHomeAmount'),
+            takeHomePeriod: document.getElementById('takeHomePeriod'),
+            effectiveRate: document.getElementById('effectiveRate'),
+            yearlyNet: document.getElementById('yearlyNet'),
+            monthlyNet: document.getElementById('monthlyNet'),
+            weeklyNet: document.getElementById('weeklyNet'),
+            hourlyNet: document.getElementById('hourlyNet'),
+            grossDisplay: document.getElementById('grossDisplay'),
+            taxDisplay: document.getElementById('taxDisplay'),
+            niDisplay: document.getElementById('niDisplay'),
+            pensionDisplay: document.getElementById('pensionDisplay'),
+            pensionRow: document.getElementById('pensionRow'),
+            studentLoanDisplay: document.getElementById('studentLoanDisplay'),
+            studentLoanRow: document.getElementById('studentLoanRow'),
+            netDisplay: document.getElementById('netDisplay'),
+            takeHomePercent: document.getElementById('takeHomePercent'),
+            donutChart: document.getElementById('donutChart'),
+            taxBandsViz: document.getElementById('taxBandsViz'),
+            marginalNotice: document.getElementById('marginalNotice'),
+            marginalRateValue: document.getElementById('marginalRateValue'),
+            regionComparison: document.getElementById('regionComparison'),
+            comparisonText: document.getElementById('comparisonText'),
+            pensionLegend: document.getElementById('pensionLegend'),
+            studentLoanLegend: document.getElementById('studentLoanLegend')
+        };
+
+        let currentPeriod = 'yearly';
+
+        // Utility Functions
+        function formatCurrency(amount, showSign = false) {
+            const absAmount = Math.abs(amount);
+            const formatted = new Intl.NumberFormat('en-GB', {
+                style: 'currency',
+                currency: 'GBP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(absAmount);
+
+            if (showSign && amount < 0) {
+                return '-' + formatted;
+            }
+            return formatted;
+        }
+
+        function parseNumber(str) {
+            if (!str) return 0;
+            return parseFloat(str.replace(/[^0-9.-]/g, '')) || 0;
+        }
+
+        function formatInputNumber(num) {
+            if (num === 0) return '';
+            return num.toLocaleString('en-GB');
+        }
+
+        // Calculate Personal Allowance with tapering
+        function calculatePersonalAllowance(grossIncome, blindAllowance, marriedAllowance) {
+            let allowance = TAX_CONFIG.personalAllowance;
+
+            if (blindAllowance) {
+                allowance += TAX_CONFIG.blindPersonsAllowance;
+            }
+
+            // Taper personal allowance for income over £100,000
+            if (grossIncome > TAX_CONFIG.personalAllowanceTaper) {
+                const reduction = Math.floor((grossIncome - TAX_CONFIG.personalAllowanceTaper) / 2);
+                allowance = Math.max(0, TAX_CONFIG.personalAllowance - reduction);
+                if (blindAllowance) {
+                    allowance += TAX_CONFIG.blindPersonsAllowance;
+                }
+            }
+
+            return allowance;
+        }
+
+        // Calculate Income Tax
+        function calculateIncomeTax(taxableIncome, region, personalAllowance) {
+            const bands = TAX_CONFIG[region].bands;
+            let tax = 0;
+            let remaining = taxableIncome;
+            const bandBreakdown = [];
+
+            // Adjust bands for personal allowance
+            const adjustedBands = bands.map((band, index) => {
+                if (index === 0) {
+                    return { ...band, to: personalAllowance };
+                } else if (index === 1) {
+                    return { ...band, from: personalAllowance + 1 };
+                }
+                return band;
+            });
+
+            for (const band of adjustedBands) {
+                if (remaining <= 0) break;
+
+                const bandSize = band.to === Infinity ? remaining : band.to - band.from + 1;
+                const taxableInBand = Math.min(remaining, Math.max(0, bandSize));
+                const taxInBand = taxableInBand * band.rate;
+
+                if (taxableInBand > 0) {
+                    bandBreakdown.push({
+                        name: band.name,
+                        rate: band.rate,
+                        amount: taxableInBand,
+                        tax: taxInBand,
+                        color: band.color
+                    });
+                }
+
+                tax += taxInBand;
+                remaining -= taxableInBand;
+            }
+
+            return { total: tax, breakdown: bandBreakdown };
+        }
+
+        // Calculate National Insurance
+        function calculateNI(grossIncome, noNI) {
+            if (noNI) return 0;
+
+            const { primaryThreshold, upperEarningsLimit, rateBelowUEL, rateAboveUEL } = TAX_CONFIG.ni;
+
+            if (grossIncome <= primaryThreshold) return 0;
+
+            let ni = 0;
+
+            if (grossIncome <= upperEarningsLimit) {
+                ni = (grossIncome - primaryThreshold) * rateBelowUEL;
+            } else {
+                ni = (upperEarningsLimit - primaryThreshold) * rateBelowUEL;
+                ni += (grossIncome - upperEarningsLimit) * rateAboveUEL;
+            }
+
+            return ni;
+        }
+
+        // Calculate Student Loan
+        function calculateStudentLoan(grossIncome, plan, hasPostgrad) {
+            let total = 0;
+
+            if (plan !== 'none') {
+                const config = TAX_CONFIG.studentLoans[plan];
+                if (grossIncome > config.threshold) {
+                    total += (grossIncome - config.threshold) * config.rate;
+                }
+            }
+
+            if (hasPostgrad && plan !== 'postgrad') {
+                const pgConfig = TAX_CONFIG.studentLoans.postgrad;
+                if (grossIncome > pgConfig.threshold) {
+                    total += (grossIncome - pgConfig.threshold) * pgConfig.rate;
+                }
+            }
+
+            return total;
+        }
+
+        // Calculate Pension
+        function calculatePension(grossIncome, enabled, amount, type, salarySacrifice) {
+            if (!enabled || !amount) return { contribution: 0, salarySacrifice: false };
+
+            let contribution = 0;
+            if (type === 'percentage') {
+                contribution = grossIncome * (parseFloat(amount) / 100);
+            } else {
+                contribution = parseFloat(amount) * 12;
+            }
+
+            return { contribution, salarySacrifice };
+        }
+
+        // Calculate Marginal Rate
+        function calculateMarginalRate(grossIncome, region, personalAllowance, noNI) {
+            // Base tax rate
+            let taxRate = 0;
+            const bands = TAX_CONFIG[region].bands;
+
+            for (const band of bands) {
+                if (grossIncome >= band.from && grossIncome <= band.to) {
+                    taxRate = band.rate;
+                    break;
+                }
+            }
+
+            // NI rate
+            let niRate = 0;
+            if (!noNI) {
+                if (grossIncome > TAX_CONFIG.ni.primaryThreshold && grossIncome <= TAX_CONFIG.ni.upperEarningsLimit) {
+                    niRate = TAX_CONFIG.ni.rateBelowUEL;
+                } else if (grossIncome > TAX_CONFIG.ni.upperEarningsLimit) {
+                    niRate = TAX_CONFIG.ni.rateAboveUEL;
+                }
+            }
+
+            // Personal allowance taper (effective 60% tax rate between £100k-£125,140)
+            let taperRate = 0;
+            if (grossIncome > TAX_CONFIG.personalAllowanceTaper && grossIncome < 125140) {
+                // For every £2 over £100k, lose £1 of allowance, so effective extra 20%
+                taperRate = 0.20; // This creates effective 60% for higher rate taxpayers
+            }
+
+            return {
+                total: taxRate + niRate + taperRate,
+                tax: taxRate,
+                ni: niRate,
+                taper: taperRate
+            };
+        }
+
+        // Main Calculation
+        function calculate() {
+            // Get inputs
+            let salary = parseNumber(elements.salary.value);
+            const bonus = parseNumber(elements.bonus.value);
+            const overtime = parseNumber(elements.overtime.value);
+
+            // Convert to annual if needed
+            if (currentPeriod === 'monthly') {
+                salary *= 12;
+            } else if (currentPeriod === 'weekly') {
+                salary *= 52;
+            }
+
+            const grossIncome = salary + bonus + (overtime * 12);
+            const region = elements.taxRegion.value;
+            const noNI = elements.noNI.checked;
+            const blindAllowance = elements.blindAllowance.checked;
+            const marriedAllowance = elements.marriedAllowance.checked;
+
+            // Pension
+            const pensionConfig = calculatePension(
+                grossIncome,
+                elements.pensionEnabled.checked,
+                elements.pensionAmount.value,
+                elements.pensionType.value,
+                elements.salarySacrifice.checked
+            );
+
+            // Taxable income after salary sacrifice
+            let taxableIncome = grossIncome;
+            let niableIncome = grossIncome;
+
+            if (pensionConfig.salarySacrifice && pensionConfig.contribution > 0) {
+                taxableIncome -= pensionConfig.contribution;
+                niableIncome -= pensionConfig.contribution;
+            }
+
+            // Personal Allowance
+            const personalAllowance = calculatePersonalAllowance(taxableIncome, blindAllowance, marriedAllowance);
+
+            // Calculate deductions
+            const taxResult = calculateIncomeTax(taxableIncome, region, personalAllowance);
+            const ni = calculateNI(niableIncome, noNI);
+            const studentLoan = calculateStudentLoan(grossIncome, elements.studentLoan.value, elements.hasPostgrad.checked);
+
+            // Pension deduction (if not salary sacrifice)
+            let pensionDeduction = 0;
+            if (!pensionConfig.salarySacrifice) {
+                pensionDeduction = pensionConfig.contribution;
+            }
+
+            // Net income
+            const totalDeductions = taxResult.total + ni + studentLoan + pensionDeduction + (pensionConfig.salarySacrifice ? pensionConfig.contribution : 0);
+            const netIncome = grossIncome - totalDeductions;
+
+            // Marginal rate
+            const marginalRate = calculateMarginalRate(taxableIncome, region, personalAllowance, noNI);
+
+            // Calculate comparison (Scotland vs England)
+            const otherRegion = region === 'england' ? 'scotland' : 'england';
+            const otherTax = calculateIncomeTax(taxableIncome, otherRegion, personalAllowance).total;
+            const taxDifference = taxResult.total - otherTax;
+
+            // Update UI
+            updateUI({
+                gross: grossIncome,
+                tax: taxResult.total,
+                ni,
+                pension: pensionConfig.contribution,
+                pensionEnabled: elements.pensionEnabled.checked,
+                studentLoan,
+                studentLoanEnabled: elements.studentLoan.value !== 'none' || elements.hasPostgrad.checked,
+                net: netIncome,
+                taxBreakdown: taxResult.breakdown,
+                marginalRate,
+                personalAllowance,
+                region,
+                taxDifference
+            });
+        }
+
+        // Update UI
+        function updateUI(data) {
+            const { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown, marginalRate, personalAllowance, region, taxDifference } = data;
+
+            // Main display
+            const displayAmount = currentPeriod === 'monthly' ? net / 12 :
+                                  currentPeriod === 'weekly' ? net / 52 : net;
+            const periodText = currentPeriod === 'monthly' ? 'per month' :
+                              currentPeriod === 'weekly' ? 'per week' : 'per year';
+
+            elements.takeHomeAmount.textContent = formatCurrency(displayAmount);
+            elements.takeHomePeriod.textContent = periodText;
+
+            // Effective rate
+            const effectiveRate = gross > 0 ? ((tax + ni) / gross * 100).toFixed(1) : 0;
+            elements.effectiveRate.textContent = `${effectiveRate}% effective tax rate`;
+
+            // Period breakdown
+            elements.yearlyNet.textContent = formatCurrency(net);
+            elements.monthlyNet.textContent = formatCurrency(net / 12);
+            elements.weeklyNet.textContent = formatCurrency(net / 52);
+            elements.hourlyNet.textContent = formatCurrency(net / 2080); // 40hrs x 52 weeks
+
+            // Breakdown list
+            elements.grossDisplay.textContent = formatCurrency(gross);
+            elements.taxDisplay.textContent = '-' + formatCurrency(tax);
+            elements.niDisplay.textContent = '-' + formatCurrency(ni);
+
+            // Pension row
+            if (pensionEnabled && pension > 0) {
+                elements.pensionRow.style.display = 'flex';
+                elements.pensionDisplay.textContent = '-' + formatCurrency(pension);
+                elements.pensionLegend.style.display = 'flex';
+            } else {
+                elements.pensionRow.style.display = 'none';
+                elements.pensionLegend.style.display = 'none';
+            }
+
+            // Student loan row
+            if (studentLoanEnabled && studentLoan > 0) {
+                elements.studentLoanRow.style.display = 'flex';
+                elements.studentLoanDisplay.textContent = '-' + formatCurrency(studentLoan);
+                elements.studentLoanLegend.style.display = 'flex';
+            } else {
+                elements.studentLoanRow.style.display = 'none';
+                elements.studentLoanLegend.style.display = 'none';
+            }
+
+            elements.netDisplay.textContent = formatCurrency(net);
+
+            // Donut chart
+            updateDonutChart(gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net);
+
+            // Tax bands
+            updateTaxBands(taxBreakdown, gross);
+
+            // Marginal rate notice
+            if (marginalRate.taper > 0) {
+                elements.marginalNotice.style.display = 'block';
+                elements.marginalRateValue.textContent = (marginalRate.total * 100).toFixed(0) + '%';
+            } else {
+                elements.marginalNotice.style.display = 'none';
+            }
+
+            // Region comparison
+            if (gross > 12570 && Math.abs(taxDifference) > 0) {
+                elements.regionComparison.style.display = 'block';
+                const otherRegion = region === 'england' ? 'Scotland' : 'England, Wales & NI';
+                if (taxDifference > 0) {
+                    elements.comparisonText.innerHTML = `You pay <strong style="color: var(--tax-color);">${formatCurrency(taxDifference)}</strong> more income tax than someone in ${otherRegion} earning the same salary.`;
+                } else if (taxDifference < 0) {
+                    elements.comparisonText.innerHTML = `You pay <strong style="color: var(--income-color);">${formatCurrency(Math.abs(taxDifference))}</strong> less income tax than someone in ${otherRegion} earning the same salary.`;
+                } else {
+                    elements.regionComparison.style.display = 'none';
+                }
+            } else {
+                elements.regionComparison.style.display = 'none';
+            }
+
+            // Take home percentage
+            const takeHomePercent = gross > 0 ? (net / gross * 100).toFixed(0) : 0;
+            elements.takeHomePercent.textContent = takeHomePercent + '%';
+        }
+
+        // Update Donut Chart
+        function updateDonutChart(gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net) {
+            if (gross === 0) {
+                elements.donutChart.innerHTML = '<circle cx="90" cy="90" r="70" fill="none" stroke="var(--bg-secondary)" stroke-width="24"/>';
+                return;
+            }
+
+            const radius = 70;
+            const circumference = 2 * Math.PI * radius;
+
+            const segments = [];
+            let offset = 0;
+
+            // Net (take-home)
+            const netPercent = net / gross;
+            segments.push({
+                percent: netPercent,
+                color: 'var(--take-home-color)',
+                offset: 0
+            });
+            offset += netPercent * circumference;
+
+            // Tax
+            const taxPercent = tax / gross;
+            segments.push({
+                percent: taxPercent,
+                color: 'var(--tax-color)',
+                offset: offset
+            });
+            offset += taxPercent * circumference;
+
+            // NI
+            const niPercent = ni / gross;
+            segments.push({
+                percent: niPercent,
+                color: 'var(--ni-color)',
+                offset: offset
+            });
+            offset += niPercent * circumference;
+
+            // Pension
+            if (pensionEnabled && pension > 0) {
+                const pensionPercent = pension / gross;
+                segments.push({
+                    percent: pensionPercent,
+                    color: 'var(--pension-color)',
+                    offset: offset
+                });
+                offset += pensionPercent * circumference;
+            }
+
+            // Student loan
+            if (studentLoanEnabled && studentLoan > 0) {
+                const slPercent = studentLoan / gross;
+                segments.push({
+                    percent: slPercent,
+                    color: 'var(--student-loan-color)',
+                    offset: offset
+                });
+            }
+
+            let svg = '';
+            segments.forEach((segment, i) => {
+                const dashArray = segment.percent * circumference;
+                const dashOffset = -segment.offset;
+                svg += `<circle cx="90" cy="90" r="${radius}" fill="none" stroke="${segment.color}" stroke-width="24" stroke-dasharray="${dashArray} ${circumference}" stroke-dashoffset="${dashOffset}" style="transition: stroke-dasharray 0.5s ease, stroke-dashoffset 0.5s ease;"/>`;
+            });
+
+            elements.donutChart.innerHTML = svg;
+        }
+
+        // Update Tax Bands Visualization
+        function updateTaxBands(breakdown, gross) {
+            if (gross === 0 || breakdown.length === 0) {
+                elements.taxBandsViz.innerHTML = '<p style="color: var(--text-tertiary); font-size: 14px;">Enter a salary to see tax band breakdown</p>';
+                return;
+            }
+
+            const maxAmount = Math.max(...breakdown.map(b => b.amount));
+
+            let html = '';
+            breakdown.forEach(band => {
+                const width = (band.amount / maxAmount) * 100;
+                html += `
+                    <div class="tax-band">
+                        <div class="tax-band-header">
+                            <span class="tax-band-name">${band.name} (${(band.rate * 100).toFixed(0)}%)</span>
+                            <span class="tax-band-amount">${formatCurrency(band.tax)} tax on ${formatCurrency(band.amount)}</span>
+                        </div>
+                        <div class="tax-band-bar">
+                            <div class="tax-band-fill" style="width: ${width}%; background: ${band.color};"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            elements.taxBandsViz.innerHTML = html;
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Salary input
+            elements.salary.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/[^0-9]/g, '');
+                if (value) {
+                    value = parseInt(value, 10);
+                    e.target.value = value.toLocaleString('en-GB');
+                }
+                calculate();
+            });
+
+            // Period buttons
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentPeriod = e.target.dataset.period;
+                    calculate();
+                });
+            });
+
+            // Accordion
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const item = header.parentElement;
+                    item.classList.toggle('open');
+                });
+            });
+
+            // Pension toggle
+            elements.pensionEnabled.addEventListener('change', () => {
+                elements.pensionOptions.style.display = elements.pensionEnabled.checked ? 'block' : 'none';
+                calculate();
+            });
+
+            // Tax year selector
+            elements.taxYearSelect.addEventListener('change', (e) => {
+                currentTaxYear = e.target.value;
+                TAX_CONFIG = TAX_CONFIGS[currentTaxYear];
+                calculate();
+            });
+
+            // All other inputs
+            const inputs = [
+                elements.taxRegion,
+                elements.pensionAmount,
+                elements.pensionType,
+                elements.salarySacrifice,
+                elements.studentLoan,
+                elements.hasPostgrad,
+                elements.blindAllowance,
+                elements.noNI,
+                elements.marriedAllowance,
+                elements.bonus,
+                elements.overtime
+            ];
+
+            inputs.forEach(input => {
+                input.addEventListener('change', calculate);
+                input.addEventListener('input', calculate);
+            });
+
+            // Number formatting for other inputs
+            [elements.bonus, elements.overtime, elements.pensionAmount].forEach(input => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.id !== 'pensionAmount') {
+                        let value = e.target.value.replace(/[^0-9]/g, '');
+                        if (value) {
+                            value = parseInt(value, 10);
+                            e.target.value = value.toLocaleString('en-GB');
+                        }
+                    }
+                    calculate();
+                });
+            });
+        }
+
+        // Initialize
+        function init() {
+            setupEventListeners();
+
+            // Set default salary
+            elements.salary.value = '50,000';
+            calculate();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
