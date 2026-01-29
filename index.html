@@ -895,10 +895,102 @@
             background: #e8e8ed;
         }
 
+        .legend-item.active {
+            background: var(--text-primary);
+            color: white;
+        }
+
         .legend-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
+        }
+
+        /* Donut Detail Panel */
+        .donut-detail {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            display: none;
+        }
+
+        .donut-detail.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .donut-detail-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .donut-detail-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .donut-detail-close {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: var(--bg-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            transition: all 0.2s ease;
+        }
+
+        .donut-detail-close:hover {
+            background: var(--text-primary);
+            color: white;
+        }
+
+        .donut-detail-amount {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .donut-detail-percent {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .donut-detail-breakdown {
+            border-top: 1px solid var(--border);
+            padding-top: 12px;
+        }
+
+        .donut-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+
+        .donut-detail-row-label {
+            color: var(--text-secondary);
+        }
+
+        .donut-detail-row-value {
+            font-weight: 600;
+            color: var(--text-primary);
         }
 
         /* Tax Band Visualization */
@@ -1542,8 +1634,8 @@
                             <div class="period-item-value" id="weeklyNet">£0</div>
                         </div>
                         <div class="period-item">
-                            <div class="period-item-label">Hourly</div>
-                            <div class="period-item-value" id="hourlyNet">£0</div>
+                            <div class="period-item-label">Daily</div>
+                            <div class="period-item-value" id="dailyNet">£0</div>
                         </div>
                     </div>
 
@@ -1641,6 +1733,23 @@
                                 <span>NI</span>
                             </div>
                         </div>
+                        <div id="donutDetail" class="donut-detail">
+                            <div class="donut-detail-header">
+                                <div class="donut-detail-title">
+                                    <div class="legend-dot" id="detailDot"></div>
+                                    <span id="detailTitle">Tax</span>
+                                </div>
+                                <button class="donut-detail-close" id="detailClose">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="donut-detail-amount" id="detailAmount">£0</div>
+                            <div class="donut-detail-percent" id="detailPercent">0% of gross salary</div>
+                            <div class="donut-detail-breakdown" id="detailBreakdown"></div>
+                        </div>
                     </div>
 
                     <div class="tax-bands-container">
@@ -1714,10 +1823,22 @@
                             <span class="compare-result-value" id="compareAGross">£0</span>
                         </div>
                         <div class="compare-result-main">
-                            <div class="compare-result-label">Take-Home Pay</div>
+                            <div class="compare-result-label">Annual Take-Home</div>
                             <div class="compare-result-value" id="compareATakeHome">£0</div>
                         </div>
                         <div class="compare-result-row">
+                            <span class="compare-result-label">Monthly</span>
+                            <span class="compare-result-value" id="compareAMonthly">£0</span>
+                        </div>
+                        <div class="compare-result-row">
+                            <span class="compare-result-label">Weekly</span>
+                            <span class="compare-result-value" id="compareAWeekly">£0</span>
+                        </div>
+                        <div class="compare-result-row">
+                            <span class="compare-result-label">Daily</span>
+                            <span class="compare-result-value" id="compareADaily">£0</span>
+                        </div>
+                        <div class="compare-result-row" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; margin-top: 8px;">
                             <span class="compare-result-label">Total to Pension</span>
                             <span class="compare-result-value" id="compareAPensionTotal">£0</span>
                         </div>
@@ -1769,10 +1890,22 @@
                             <span class="compare-result-value" id="compareBGross">£0</span>
                         </div>
                         <div class="compare-result-main">
-                            <div class="compare-result-label">Take-Home Pay</div>
+                            <div class="compare-result-label">Annual Take-Home</div>
                             <div class="compare-result-value" id="compareBTakeHome">£0</div>
                         </div>
                         <div class="compare-result-row">
+                            <span class="compare-result-label">Monthly</span>
+                            <span class="compare-result-value" id="compareBMonthly">£0</span>
+                        </div>
+                        <div class="compare-result-row">
+                            <span class="compare-result-label">Weekly</span>
+                            <span class="compare-result-value" id="compareBWeekly">£0</span>
+                        </div>
+                        <div class="compare-result-row">
+                            <span class="compare-result-label">Daily</span>
+                            <span class="compare-result-value" id="compareBDaily">£0</span>
+                        </div>
+                        <div class="compare-result-row" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 12px; margin-top: 8px;">
                             <span class="compare-result-label">Total to Pension</span>
                             <span class="compare-result-value" id="compareBPensionTotal">£0</span>
                         </div>
@@ -1934,7 +2067,7 @@
             yearlyNet: document.getElementById('yearlyNet'),
             monthlyNet: document.getElementById('monthlyNet'),
             weeklyNet: document.getElementById('weeklyNet'),
-            hourlyNet: document.getElementById('hourlyNet'),
+            dailyNet: document.getElementById('dailyNet'),
             grossDisplay: document.getElementById('grossDisplay'),
             taxDisplay: document.getElementById('taxDisplay'),
             niDisplay: document.getElementById('niDisplay'),
@@ -1956,8 +2089,18 @@
             pensionSummary: document.getElementById('pensionSummary'),
             yourPensionDisplay: document.getElementById('yourPensionDisplay'),
             employerPensionDisplay: document.getElementById('employerPensionDisplay'),
-            totalPensionDisplay: document.getElementById('totalPensionDisplay')
+            totalPensionDisplay: document.getElementById('totalPensionDisplay'),
+            donutDetail: document.getElementById('donutDetail'),
+            detailDot: document.getElementById('detailDot'),
+            detailTitle: document.getElementById('detailTitle'),
+            detailAmount: document.getElementById('detailAmount'),
+            detailPercent: document.getElementById('detailPercent'),
+            detailBreakdown: document.getElementById('detailBreakdown'),
+            detailClose: document.getElementById('detailClose')
         };
+
+        // State for donut chart detail
+        let currentBreakdownData = null;
 
         // Utility Functions
         function formatCurrency(amount) {
@@ -2321,7 +2464,7 @@
             elements.yearlyNet.textContent = formatCurrency(net);
             elements.monthlyNet.textContent = formatCurrency(net / 12);
             elements.weeklyNet.textContent = formatCurrency(net / 52);
-            elements.hourlyNet.textContent = formatCurrency(net / 2080);
+            elements.dailyNet.textContent = formatCurrency(net / 260); // 260 working days
 
             elements.grossDisplay.textContent = formatCurrency(gross);
             elements.taxDisplay.textContent = '-' + formatCurrency(tax);
@@ -2351,7 +2494,7 @@
             elements.netDisplay.textContent = formatCurrency(net);
 
             // Donut chart
-            updateDonutChart(gross, tax, ni, pension.employee, pensionEnabled, studentLoan, studentLoanEnabled, net);
+            updateDonutChart(gross, tax, ni, pension.employee, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown);
 
             // Tax bands
             updateTaxBands(taxBreakdown, gross);
@@ -2377,10 +2520,20 @@
                 elements.regionComparison.style.display = 'none';
             }
 
-            // Tax code notice
-            if (taxCodeInfo.description && taxCodeInfo.suffix !== 'L') {
+            // Tax code notice - show when allowance differs from standard or special code
+            const standardAllowance = TAX_CONFIG.personalAllowance;
+            if (taxCodeInfo.allowance !== standardAllowance || taxCodeInfo.suffix !== 'L' || taxCodeInfo.prefix) {
                 elements.taxCodeNotice.style.display = 'block';
-                elements.taxCodeText.textContent = taxCodeInfo.description;
+                let noticeText = taxCodeInfo.description || '';
+                if (taxCodeInfo.allowance !== standardAllowance && taxCodeInfo.allowance >= 0 && taxCodeInfo.suffix === 'L') {
+                    const diff = taxCodeInfo.allowance - standardAllowance;
+                    if (diff > 0) {
+                        noticeText = `Tax-free allowance: £${taxCodeInfo.allowance.toLocaleString()} (+£${diff.toLocaleString()} more than standard)`;
+                    } else {
+                        noticeText = `Tax-free allowance: £${taxCodeInfo.allowance.toLocaleString()} (£${Math.abs(diff).toLocaleString()} less than standard)`;
+                    }
+                }
+                elements.taxCodeText.textContent = noticeText;
             } else {
                 elements.taxCodeNotice.style.display = 'none';
             }
@@ -2390,13 +2543,17 @@
         }
 
         // Apple-style Donut Chart
-        function updateDonutChart(gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net) {
+        function updateDonutChart(gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown) {
             const svg = elements.donutChart;
             const radius = 80;
             const circumference = 2 * Math.PI * radius;
 
+            // Close detail panel when data changes
+            elements.donutDetail.classList.remove('active');
+
             if (gross === 0) {
                 svg.innerHTML = '<circle class="donut-ring" cx="100" cy="100" r="80" stroke-width="20"/>';
+                currentBreakdownData = null;
                 updateLegend(false, false);
                 return;
             }
@@ -2406,25 +2563,79 @@
 
             // Take-home (starts at top)
             const netPercent = Math.max(0, net / gross);
-            segments.push({ percent: netPercent, color: 'var(--take-home-color)', label: 'Take-Home' });
+            segments.push({
+                percent: netPercent,
+                color: 'var(--take-home-color)',
+                colorHex: '#007aff',
+                label: 'Take-Home',
+                amount: net,
+                details: [
+                    { label: 'Yearly', value: net },
+                    { label: 'Monthly', value: net / 12 },
+                    { label: 'Weekly', value: net / 52 },
+                    { label: 'Daily', value: net / 260 }
+                ]
+            });
 
             // Tax
             const taxPercent = tax / gross;
-            segments.push({ percent: taxPercent, color: 'var(--tax-color)', label: 'Tax' });
+            segments.push({
+                percent: taxPercent,
+                color: 'var(--tax-color)',
+                colorHex: '#ff3b30',
+                label: 'Income Tax',
+                amount: tax,
+                details: taxBreakdown && taxBreakdown.length > 0
+                    ? taxBreakdown.map(b => ({ label: `${b.name} (${(b.rate*100).toFixed(0)}%)`, value: b.tax }))
+                    : [{ label: 'Total Tax', value: tax }]
+            });
 
             // NI
             const niPercent = ni / gross;
-            segments.push({ percent: niPercent, color: 'var(--ni-color)', label: 'NI' });
+            segments.push({
+                percent: niPercent,
+                color: 'var(--ni-color)',
+                colorHex: '#ff9500',
+                label: 'National Insurance',
+                amount: ni,
+                details: [
+                    { label: 'Employee NI (8% / 2%)', value: ni },
+                    { label: 'Monthly', value: ni / 12 }
+                ]
+            });
 
             // Pension
             if (pensionEnabled && pension > 0) {
-                segments.push({ percent: pension / gross, color: 'var(--pension-color)', label: 'Pension' });
+                segments.push({
+                    percent: pension / gross,
+                    color: 'var(--pension-color)',
+                    colorHex: '#5856d6',
+                    label: 'Pension',
+                    amount: pension,
+                    details: [
+                        { label: 'Your Annual Contribution', value: pension },
+                        { label: 'Monthly', value: pension / 12 }
+                    ]
+                });
             }
 
             // Student loan
             if (studentLoanEnabled && studentLoan > 0) {
-                segments.push({ percent: studentLoan / gross, color: 'var(--student-loan-color)', label: 'Student Loan' });
+                segments.push({
+                    percent: studentLoan / gross,
+                    color: 'var(--student-loan-color)',
+                    colorHex: '#af52de',
+                    label: 'Student Loan',
+                    amount: studentLoan,
+                    details: [
+                        { label: 'Annual Repayment', value: studentLoan },
+                        { label: 'Monthly', value: studentLoan / 12 }
+                    ]
+                });
             }
+
+            // Store for click handling
+            currentBreakdownData = { gross, segments };
 
             let svgContent = '<circle class="donut-ring" cx="100" cy="100" r="80" stroke-width="20"/>';
 
@@ -2440,7 +2651,8 @@
                         stroke-width="20"
                         stroke-dasharray="${dashArray} ${circumference}"
                         stroke-dashoffset="${dashOffset}"
-                        data-label="${segment.label}"
+                        data-index="${i}"
+                        style="cursor: pointer;"
                     />
                 `;
 
@@ -2448,37 +2660,79 @@
             });
 
             svg.innerHTML = svgContent;
+
+            // Add click handlers to segments
+            svg.querySelectorAll('.donut-segment').forEach(segment => {
+                segment.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    showDonutDetail(index);
+                });
+            });
+
             updateLegend(pensionEnabled && pension > 0, studentLoanEnabled && studentLoan > 0);
+        }
+
+        function showDonutDetail(index) {
+            if (!currentBreakdownData || !currentBreakdownData.segments[index]) return;
+
+            const segment = currentBreakdownData.segments[index];
+            const gross = currentBreakdownData.gross;
+
+            elements.detailDot.style.background = segment.color;
+            elements.detailTitle.textContent = segment.label;
+            elements.detailAmount.textContent = formatCurrency(segment.amount);
+            elements.detailAmount.style.color = segment.colorHex;
+            elements.detailPercent.textContent = `${(segment.percent * 100).toFixed(1)}% of gross salary (${formatCurrency(gross)})`;
+
+            let breakdownHtml = '';
+            segment.details.forEach(detail => {
+                breakdownHtml += `
+                    <div class="donut-detail-row">
+                        <span class="donut-detail-row-label">${detail.label}</span>
+                        <span class="donut-detail-row-value">${formatCurrency(detail.value)}</span>
+                    </div>
+                `;
+            });
+            elements.detailBreakdown.innerHTML = breakdownHtml;
+
+            elements.donutDetail.classList.add('active');
+
+            // Update legend to show active state
+            document.querySelectorAll('.legend-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
         }
 
         function updateLegend(showPension, showStudentLoan) {
             let html = `
-                <div class="legend-item">
+                <div class="legend-item" data-index="0" style="cursor: pointer;">
                     <div class="legend-dot" style="background: var(--take-home-color);"></div>
                     <span>Take-Home</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" data-index="1" style="cursor: pointer;">
                     <div class="legend-dot" style="background: var(--tax-color);"></div>
                     <span>Tax</span>
                 </div>
-                <div class="legend-item">
+                <div class="legend-item" data-index="2" style="cursor: pointer;">
                     <div class="legend-dot" style="background: var(--ni-color);"></div>
                     <span>NI</span>
                 </div>
             `;
 
+            let nextIndex = 3;
             if (showPension) {
                 html += `
-                    <div class="legend-item">
+                    <div class="legend-item" data-index="${nextIndex}" style="cursor: pointer;">
                         <div class="legend-dot" style="background: var(--pension-color);"></div>
                         <span>Pension</span>
                     </div>
                 `;
+                nextIndex++;
             }
 
             if (showStudentLoan) {
                 html += `
-                    <div class="legend-item">
+                    <div class="legend-item" data-index="${nextIndex}" style="cursor: pointer;">
                         <div class="legend-dot" style="background: var(--student-loan-color);"></div>
                         <span>Student Loan</span>
                     </div>
@@ -2486,6 +2740,16 @@
             }
 
             elements.chartLegend.innerHTML = html;
+
+            // Add click handlers to legend items
+            elements.chartLegend.querySelectorAll('.legend-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = parseInt(item.dataset.index);
+                    if (!isNaN(index)) {
+                        showDonutDetail(index);
+                    }
+                });
+            });
         }
 
         // Update Tax Bands
@@ -2559,10 +2823,16 @@
 
             document.getElementById('compareAGross').textContent = formatCurrency(resultA.gross);
             document.getElementById('compareATakeHome').textContent = formatCurrency(resultA.net);
+            document.getElementById('compareAMonthly').textContent = formatCurrency(resultA.net / 12);
+            document.getElementById('compareAWeekly').textContent = formatCurrency(resultA.net / 52);
+            document.getElementById('compareADaily').textContent = formatCurrency(resultA.net / 260);
             document.getElementById('compareAPensionTotal').textContent = formatCurrency(resultA.totalPension);
 
             document.getElementById('compareBGross').textContent = formatCurrency(resultB.gross);
             document.getElementById('compareBTakeHome').textContent = formatCurrency(resultB.net);
+            document.getElementById('compareBMonthly').textContent = formatCurrency(resultB.net / 12);
+            document.getElementById('compareBWeekly').textContent = formatCurrency(resultB.net / 52);
+            document.getElementById('compareBDaily').textContent = formatCurrency(resultB.net / 260);
             document.getElementById('compareBPensionTotal').textContent = formatCurrency(resultB.totalPension);
 
             const diffTakeHome = resultB.net - resultA.net;
@@ -2599,6 +2869,14 @@
             elements.taxCode.addEventListener('input', (e) => {
                 e.target.value = e.target.value.toUpperCase();
                 calculate();
+            });
+
+            // Donut detail close button
+            elements.detailClose.addEventListener('click', () => {
+                elements.donutDetail.classList.remove('active');
+                document.querySelectorAll('.legend-item').forEach(item => {
+                    item.classList.remove('active');
+                });
             });
 
             // Period buttons
