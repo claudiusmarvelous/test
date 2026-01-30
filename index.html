@@ -107,29 +107,26 @@
             color: var(--text-secondary);
         }
 
-        /* Hero Section */
+        /* Hero Section - Apple-style minimal */
         .hero {
             text-align: center;
-            padding: 60px 24px 40px;
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            padding: 32px 24px 24px;
+            background: var(--bg-primary);
         }
 
         .hero h1 {
-            font-size: clamp(36px, 6vw, 56px);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #1d1d1f 0%, #6e6e73 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+            color: var(--text-primary);
         }
 
         .hero p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 24px;
+            font-size: 15px;
+            color: var(--text-tertiary);
+            max-width: 400px;
+            margin: 0 auto 20px;
             font-weight: 400;
         }
 
@@ -1394,9 +1391,9 @@
 
     <section class="hero">
         <div class="container">
-            <h1 class="animate-in">Know Your Take-Home</h1>
-            <p class="animate-in delay-1">Calculate your UK salary after tax, National Insurance, pension, and student loan. See exactly what lands in your account.</p>
-            <div class="tab-nav animate-in delay-2">
+            <h1>UK Salary Calculator</h1>
+            <p>See your take-home pay after tax, NI, pension & more.</p>
+            <div class="tab-nav">
                 <button class="tab-btn active" data-tab="calculator">Calculator</button>
                 <button class="tab-btn" data-tab="compare">Compare</button>
             </div>
@@ -2216,33 +2213,55 @@
 
             // Handle special tax codes
             if (taxCodeSuffix === 'BR') {
-                return { total: taxableIncome * 0.20, breakdown: [{ name: 'Basic Rate', rate: 0.20, amount: taxableIncome, tax: taxableIncome * 0.20, color: '#ff9500' }] };
+                return { total: taxableIncome * 0.20, breakdown: [{ name: 'Basic Rate', rate: 0.20, amount: taxableIncome, tax: taxableIncome * 0.20, color: '#ff9500' }], personalAllowanceUsed: 0 };
             } else if (taxCodeSuffix === 'D0') {
-                return { total: taxableIncome * 0.40, breakdown: [{ name: 'Higher Rate', rate: 0.40, amount: taxableIncome, tax: taxableIncome * 0.40, color: '#ff3b30' }] };
+                return { total: taxableIncome * 0.40, breakdown: [{ name: 'Higher Rate', rate: 0.40, amount: taxableIncome, tax: taxableIncome * 0.40, color: '#ff3b30' }], personalAllowanceUsed: 0 };
             } else if (taxCodeSuffix === 'D1') {
-                return { total: taxableIncome * 0.45, breakdown: [{ name: 'Additional Rate', rate: 0.45, amount: taxableIncome, tax: taxableIncome * 0.45, color: '#af52de' }] };
+                return { total: taxableIncome * 0.45, breakdown: [{ name: 'Additional Rate', rate: 0.45, amount: taxableIncome, tax: taxableIncome * 0.45, color: '#af52de' }], personalAllowanceUsed: 0 };
             } else if (taxCodeSuffix === 'NT') {
-                return { total: 0, breakdown: [] };
+                return { total: 0, breakdown: [{ name: 'Tax-Free (NT)', rate: 0, amount: taxableIncome, tax: 0, color: '#34c759' }], personalAllowanceUsed: taxableIncome };
             }
 
-            // Adjust bands for personal allowance
-            const adjustedBands = bands.map((band, index) => {
-                if (index === 0) {
-                    return { ...band, to: Math.max(0, personalAllowance) };
-                } else if (index === 1) {
-                    return { ...band, from: Math.max(0, personalAllowance) + 1 };
-                }
-                return band;
-            });
+            // Track personal allowance used
+            const personalAllowanceUsed = Math.min(taxableIncome, Math.max(0, personalAllowance));
 
-            for (const band of adjustedBands) {
-                if (remaining <= 0) break;
+            // Add personal allowance band first (0% rate) if applicable
+            if (personalAllowance > 0 && taxableIncome > 0) {
+                const paAmount = Math.min(taxableIncome, personalAllowance);
+                bandBreakdown.push({
+                    name: 'Personal Allowance',
+                    rate: 0,
+                    amount: paAmount,
+                    tax: 0,
+                    color: '#34c759'
+                });
+                remaining -= paAmount;
+            }
 
-                const bandSize = band.to === Infinity ? remaining : band.to - band.from + 1;
-                const taxableInBand = Math.min(remaining, Math.max(0, bandSize));
+            // Now calculate tax on remaining income using the taxed bands
+            // Get the taxable bands (skip the first one which is personal allowance in config)
+            const taxableBands = region === 'scotland' ? [
+                { name: 'Starter Rate', rate: 0.19, from: 0, to: 2306, color: '#30d158' },
+                { name: 'Basic Rate', rate: 0.20, from: 2306, to: 13991, color: '#ffcc00' },
+                { name: 'Intermediate Rate', rate: 0.21, from: 13991, to: 31092, color: '#ff9500' },
+                { name: 'Higher Rate', rate: 0.42, from: 31092, to: 62430, color: '#ff3b30' },
+                { name: 'Advanced Rate', rate: 0.45, from: 62430, to: 112570, color: '#ff2d55' },
+                { name: 'Top Rate', rate: 0.48, from: 112570, to: Infinity, color: '#af52de' }
+            ] : [
+                { name: 'Basic Rate', rate: 0.20, from: 0, to: 37700, color: '#ff9500' },
+                { name: 'Higher Rate', rate: 0.40, from: 37700, to: 87440, color: '#ff3b30' },
+                { name: 'Additional Rate', rate: 0.45, from: 87440, to: Infinity, color: '#af52de' }
+            ];
+
+            let taxableRemaining = remaining;
+            for (const band of taxableBands) {
+                if (taxableRemaining <= 0) break;
+
+                const bandSize = band.to === Infinity ? taxableRemaining : band.to - band.from;
+                const taxableInBand = Math.min(taxableRemaining, bandSize);
                 const taxInBand = taxableInBand * band.rate;
 
-                if (taxableInBand > 0 && band.rate > 0) {
+                if (taxableInBand > 0) {
                     bandBreakdown.push({
                         name: band.name,
                         rate: band.rate,
@@ -2250,13 +2269,13 @@
                         tax: taxInBand,
                         color: band.color
                     });
+                    tax += taxInBand;
                 }
 
-                tax += taxInBand;
-                remaining -= taxableInBand;
+                taxableRemaining -= taxableInBand;
             }
 
-            return { total: Math.max(0, tax), breakdown: bandBreakdown };
+            return { total: Math.max(0, tax), breakdown: bandBreakdown, personalAllowanceUsed };
         }
 
         // Calculate National Insurance
