@@ -643,187 +643,76 @@
         }
 
         /* Period Breakdown */
-        .period-breakdown {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .period-item {
-            background: white;
-            padding: 14px 10px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
-        }
-
-        .period-item:hover {
+        /* Period Selector - Apple-style Segmented Control */
+        .period-selector {
+            display: flex;
             background: var(--bg-secondary);
-            transform: translateY(-1px);
+            border-radius: 10px;
+            padding: 3px;
+            margin: 0 24px 20px;
+            position: relative;
         }
 
-        .period-item:active {
-            transform: translateY(0);
+        .period-selector::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            height: calc(100% - 6px);
+            width: calc(25% - 1.5px);
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .period-item-label {
+        .period-selector[data-active="monthly"]::before {
+            transform: translateX(100%);
+        }
+
+        .period-selector[data-active="weekly"]::before {
+            transform: translateX(200%);
+        }
+
+        .period-selector[data-active="daily"]::before {
+            transform: translateX(300%);
+        }
+
+        .period-option {
+            flex: 1;
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: color 0.2s ease;
+            position: relative;
+            z-index: 1;
+            user-select: none;
+        }
+
+        .period-option:hover {
+            color: var(--text-primary);
+        }
+
+        .period-option.active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .period-label {
+            display: block;
             font-size: 10px;
             font-weight: 600;
-            color: var(--text-tertiary);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 4px;
-        }
-
-        .period-item-value {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .period-item-hint {
-            font-size: 9px;
             color: var(--text-tertiary);
-            margin-top: 4px;
+            margin-bottom: 2px;
         }
 
-        /* Period Detail Modal */
-        .period-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .period-modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .period-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            max-width: 400px;
-            width: 90%;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .period-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .period-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .period-modal-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .period-modal-close {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .period-modal-close:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .period-modal-close svg {
-            width: 16px;
-            height: 16px;
-            color: var(--text-secondary);
-        }
-
-        .period-modal-net {
-            text-align: center;
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .period-modal-net-label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-
-        .period-modal-net-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--accent);
-            letter-spacing: -0.02em;
-        }
-
-        .period-modal-body {
-            padding: 20px 24px;
-        }
-
-        .period-modal-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .period-modal-row:last-child {
-            border-bottom: none;
-        }
-
-        .period-modal-row-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .period-modal-row-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .period-modal-row-value.deduction {
-            color: #ff3b30;
-        }
-
-        .period-modal-row-value.income {
+        .period-option.active .period-label {
             color: var(--accent);
         }
 
@@ -1482,8 +1371,13 @@
                 font-size: 26px;
             }
 
-            .period-breakdown {
-                grid-template-columns: repeat(2, 1fr);
+            .period-selector {
+                margin: 0 16px 16px;
+            }
+
+            .period-option {
+                font-size: 12px;
+                padding: 8px 6px;
             }
 
             .breakdown-list, .chart-container, .tax-bands-container {
@@ -1778,27 +1672,11 @@
                         <div class="effective-rate" id="effectiveRate">0% effective tax rate</div>
                     </div>
 
-                    <div class="period-breakdown">
-                        <div class="period-item" data-period="yearly">
-                            <div class="period-item-label">Yearly</div>
-                            <div class="period-item-value" id="yearlyNet">£0</div>
-                            <div class="period-item-hint">Click for details</div>
-                        </div>
-                        <div class="period-item" data-period="monthly">
-                            <div class="period-item-label">Monthly</div>
-                            <div class="period-item-value" id="monthlyNet">£0</div>
-                            <div class="period-item-hint">Click for details</div>
-                        </div>
-                        <div class="period-item" data-period="weekly">
-                            <div class="period-item-label">Weekly</div>
-                            <div class="period-item-value" id="weeklyNet">£0</div>
-                            <div class="period-item-hint">Click for details</div>
-                        </div>
-                        <div class="period-item" data-period="daily">
-                            <div class="period-item-label">Daily</div>
-                            <div class="period-item-value" id="dailyNet">£0</div>
-                            <div class="period-item-hint">Click for details</div>
-                        </div>
+                    <div class="period-selector" data-active="yearly" id="periodSelector">
+                        <div class="period-option active" data-period="yearly">Yearly</div>
+                        <div class="period-option" data-period="monthly">Monthly</div>
+                        <div class="period-option" data-period="weekly">Weekly</div>
+                        <div class="period-option" data-period="daily">Daily</div>
                     </div>
 
                     <!-- Pension Summary -->
@@ -2203,7 +2081,8 @@
         let currentTaxYear = '2025';
         let TAX_CONFIG = TAX_CONFIGS[currentTaxYear];
         let currentPeriod = 'yearly';
-        let lastCalculation = null; // Store last calculation for period modal
+        let displayPeriod = 'yearly'; // Controls how breakdown is displayed
+        let lastCalculation = null; // Store last calculation for period changes
 
         // DOM Elements
         const elements = {
@@ -2227,10 +2106,7 @@
             takeHomeAmount: document.getElementById('takeHomeAmount'),
             takeHomePeriod: document.getElementById('takeHomePeriod'),
             effectiveRate: document.getElementById('effectiveRate'),
-            yearlyNet: document.getElementById('yearlyNet'),
-            monthlyNet: document.getElementById('monthlyNet'),
-            weeklyNet: document.getElementById('weeklyNet'),
-            dailyNet: document.getElementById('dailyNet'),
+            periodSelector: document.getElementById('periodSelector'),
             grossDisplay: document.getElementById('grossDisplay'),
             taxDisplay: document.getElementById('taxDisplay'),
             niDisplay: document.getElementById('niDisplay'),
@@ -2671,13 +2547,13 @@
         function updateUI(data) {
             const { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown, marginalRate, personalAllowance, region, taxDifference, taxCodeInfo } = data;
 
-            // Store for period modal
-            lastCalculation = { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net };
+            // Store for period changes
+            lastCalculation = { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown };
 
-            const displayAmount = currentPeriod === 'monthly' ? net / 12 :
-                                  currentPeriod === 'weekly' ? net / 52 : net;
-            const periodText = currentPeriod === 'monthly' ? 'per month' :
-                              currentPeriod === 'weekly' ? 'per week' : 'per year';
+            // Calculate display values based on selected period
+            const divisor = getDivisor(displayPeriod);
+            const displayAmount = net / divisor;
+            const periodText = getPeriodText(displayPeriod);
 
             elements.takeHomeAmount.textContent = formatCurrency(displayAmount);
             elements.takeHomePeriod.textContent = periodText;
@@ -2685,43 +2561,53 @@
             const effectiveRate = gross > 0 ? ((tax + ni) / gross * 100).toFixed(1) : 0;
             elements.effectiveRate.textContent = `${effectiveRate}% effective tax rate`;
 
-            elements.yearlyNet.textContent = formatCurrency(net);
-            elements.monthlyNet.textContent = formatCurrency(net / 12);
-            elements.weeklyNet.textContent = formatCurrency(net / 52);
-            elements.dailyNet.textContent = formatCurrency(net / 260); // 260 working days
+            // Calculate period values
+            const periodGross = gross / divisor;
+            const periodTax = tax / divisor;
+            const periodNI = ni / divisor;
+            const periodPension = pensionEnabled ? pension.employee / divisor : 0;
+            const periodStudentLoan = studentLoanEnabled ? studentLoan / divisor : 0;
 
-            elements.grossDisplay.textContent = formatCurrency(gross);
-            elements.taxDisplay.textContent = '-' + formatCurrency(tax);
-            elements.niDisplay.textContent = '-' + formatCurrency(ni);
+            // Update breakdown list
+            updateBreakdownList({
+                gross: periodGross,
+                tax: periodTax,
+                ni: periodNI,
+                pension: periodPension,
+                pensionEnabled,
+                studentLoan: periodStudentLoan,
+                studentLoanEnabled
+            });
 
-            // Pension rows
+            // Pension summary (always show annual)
             if (pensionEnabled && pension.employee > 0) {
-                elements.pensionRow.style.display = 'flex';
-                elements.pensionDisplay.textContent = '-' + formatCurrency(pension.employee);
                 elements.pensionSummary.style.display = 'block';
                 elements.yourPensionDisplay.textContent = formatCurrency(pension.employee);
                 elements.employerPensionDisplay.textContent = formatCurrency(pension.employer);
                 elements.totalPensionDisplay.textContent = formatCurrency(pension.total);
             } else {
-                elements.pensionRow.style.display = 'none';
                 elements.pensionSummary.style.display = 'none';
             }
 
-            // Student loan row
-            if (studentLoanEnabled && studentLoan > 0) {
-                elements.studentLoanRow.style.display = 'flex';
-                elements.studentLoanDisplay.textContent = '-' + formatCurrency(studentLoan);
-            } else {
-                elements.studentLoanRow.style.display = 'none';
-            }
+            // Donut chart with period values
+            updateDonutChart({
+                gross: periodGross,
+                tax: periodTax,
+                ni: periodNI,
+                pension: periodPension,
+                pensionEnabled,
+                studentLoan: periodStudentLoan,
+                studentLoanEnabled,
+                net: displayAmount
+            });
 
-            elements.netDisplay.textContent = formatCurrency(net);
-
-            // Donut chart
-            updateDonutChart(gross, tax, ni, pension.employee, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown);
-
-            // Tax bands
-            updateTaxBands(taxBreakdown, gross);
+            // Tax bands with period values
+            const periodBreakdown = taxBreakdown.map(band => ({
+                ...band,
+                amount: band.amount / divisor,
+                tax: band.tax / divisor
+            }));
+            updateTaxBands(periodBreakdown, periodGross);
 
             // Marginal rate notice
             if (marginalRate.taper > 0) {
@@ -2766,8 +2652,39 @@
             elements.takeHomePercent.textContent = takeHomePercent + '%';
         }
 
+        // Update breakdown list values
+        function updateBreakdownList(data) {
+            const { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled } = data;
+
+            elements.grossDisplay.textContent = formatCurrency(gross);
+            elements.taxDisplay.textContent = '-' + formatCurrency(tax);
+            elements.niDisplay.textContent = '-' + formatCurrency(ni);
+
+            // Pension row
+            if (pensionEnabled && pension > 0) {
+                elements.pensionRow.style.display = 'flex';
+                elements.pensionDisplay.textContent = '-' + formatCurrency(pension);
+            } else {
+                elements.pensionRow.style.display = 'none';
+            }
+
+            // Student loan row
+            if (studentLoanEnabled && studentLoan > 0) {
+                elements.studentLoanRow.style.display = 'flex';
+                elements.studentLoanDisplay.textContent = '-' + formatCurrency(studentLoan);
+            } else {
+                elements.studentLoanRow.style.display = 'none';
+            }
+
+            // Net display
+            const net = gross - tax - ni - (pensionEnabled ? pension : 0) - (studentLoanEnabled ? studentLoan : 0);
+            elements.netDisplay.textContent = formatCurrency(net);
+        }
+
         // Apple-style Donut Chart
-        function updateDonutChart(gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown) {
+        function updateDonutChart(data) {
+            const { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net } = data;
+
             const svg = elements.donutChart;
             const radius = 80;
             const circumference = 2 * Math.PI * radius;
@@ -2793,12 +2710,7 @@
                 colorHex: '#007aff',
                 label: 'Take-Home',
                 amount: net,
-                details: [
-                    { label: 'Yearly', value: net },
-                    { label: 'Monthly', value: net / 12 },
-                    { label: 'Weekly', value: net / 52 },
-                    { label: 'Daily', value: net / 260 }
-                ]
+                details: [{ label: 'Take-Home Pay', value: net }]
             });
 
             // Tax
@@ -2809,9 +2721,7 @@
                 colorHex: '#ff3b30',
                 label: 'Income Tax',
                 amount: tax,
-                details: taxBreakdown && taxBreakdown.length > 0
-                    ? taxBreakdown.map(b => ({ label: `${b.name} (${(b.rate*100).toFixed(0)}%)`, value: b.tax }))
-                    : [{ label: 'Total Tax', value: tax }]
+                details: [{ label: 'Income Tax', value: tax }]
             });
 
             // NI
@@ -2822,10 +2732,7 @@
                 colorHex: '#ff9500',
                 label: 'National Insurance',
                 amount: ni,
-                details: [
-                    { label: 'Employee NI (8% / 2%)', value: ni },
-                    { label: 'Monthly', value: ni / 12 }
-                ]
+                details: [{ label: 'National Insurance', value: ni }]
             });
 
             // Pension
@@ -2836,10 +2743,7 @@
                     colorHex: '#5856d6',
                     label: 'Pension',
                     amount: pension,
-                    details: [
-                        { label: 'Your Annual Contribution', value: pension },
-                        { label: 'Monthly', value: pension / 12 }
-                    ]
+                    details: [{ label: 'Pension Contribution', value: pension }]
                 });
             }
 
@@ -2851,10 +2755,7 @@
                     colorHex: '#af52de',
                     label: 'Student Loan',
                     amount: studentLoan,
-                    details: [
-                        { label: 'Annual Repayment', value: studentLoan },
-                        { label: 'Monthly', value: studentLoan / 12 }
-                    ]
+                    details: [{ label: 'Student Loan', value: studentLoan }]
                 });
             }
 
@@ -3220,112 +3121,95 @@
         }
 
         // Initialize
-        // Period Modal Functions
-        function showPeriodModal(period) {
+        // Period Selector Functions
+        function setupPeriodSelector() {
+            const selector = document.getElementById('periodSelector');
+            const options = selector.querySelectorAll('.period-option');
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    const period = option.dataset.period;
+                    if (period && period !== displayPeriod) {
+                        displayPeriod = period;
+
+                        // Update active state
+                        options.forEach(o => o.classList.remove('active'));
+                        option.classList.add('active');
+
+                        // Update selector background position
+                        selector.dataset.active = period;
+
+                        // Refresh the display with the new period
+                        if (lastCalculation) {
+                            refreshDisplayForPeriod();
+                        }
+                    }
+                });
+            });
+        }
+
+        function refreshDisplayForPeriod() {
             if (!lastCalculation) return;
 
-            const { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net } = lastCalculation;
+            const divisor = getDivisor(displayPeriod);
+            const { gross, tax, ni, pension, pensionEnabled, studentLoan, studentLoanEnabled, net, taxBreakdown } = lastCalculation;
 
-            const divisors = {
-                yearly: 1,
-                monthly: 12,
-                weekly: 52,
-                daily: 260
-            };
+            // Update main display
+            elements.takeHomeAmount.textContent = formatCurrency(net / divisor);
+            elements.takeHomePeriod.textContent = getPeriodText(displayPeriod);
 
-            const titles = {
-                yearly: 'Yearly Breakdown',
-                monthly: 'Monthly Breakdown',
-                weekly: 'Weekly Breakdown',
-                daily: 'Daily Breakdown (Working Days)'
-            };
-
-            const divisor = divisors[period];
+            // Update breakdown list values
             const periodGross = gross / divisor;
             const periodTax = tax / divisor;
             const periodNI = ni / divisor;
             const periodPension = pensionEnabled ? pension.employee / divisor : 0;
             const periodStudentLoan = studentLoanEnabled ? studentLoan / divisor : 0;
-            const periodNet = net / divisor;
 
-            document.getElementById('periodModalTitle').textContent = titles[period];
-            document.getElementById('periodModalNet').textContent = formatCurrency(periodNet);
-
-            let bodyHtml = `
-                <div class="period-modal-row">
-                    <span class="period-modal-row-label">Gross Salary</span>
-                    <span class="period-modal-row-value income">${formatCurrency(periodGross)}</span>
-                </div>
-                <div class="period-modal-row">
-                    <span class="period-modal-row-label">Income Tax</span>
-                    <span class="period-modal-row-value deduction">-${formatCurrency(periodTax)}</span>
-                </div>
-                <div class="period-modal-row">
-                    <span class="period-modal-row-label">National Insurance</span>
-                    <span class="period-modal-row-value deduction">-${formatCurrency(periodNI)}</span>
-                </div>
-            `;
-
-            if (pensionEnabled && periodPension > 0) {
-                bodyHtml += `
-                <div class="period-modal-row">
-                    <span class="period-modal-row-label">Pension Contribution</span>
-                    <span class="period-modal-row-value deduction">-${formatCurrency(periodPension)}</span>
-                </div>
-                `;
-            }
-
-            if (studentLoanEnabled && periodStudentLoan > 0) {
-                bodyHtml += `
-                <div class="period-modal-row">
-                    <span class="period-modal-row-label">Student Loan</span>
-                    <span class="period-modal-row-value deduction">-${formatCurrency(periodStudentLoan)}</span>
-                </div>
-                `;
-            }
-
-            bodyHtml += `
-                <div class="period-modal-row" style="border-top: 2px solid var(--border); padding-top: 16px; margin-top: 8px;">
-                    <span class="period-modal-row-label" style="font-weight: 600;">Take Home Pay</span>
-                    <span class="period-modal-row-value income" style="font-size: 16px;">${formatCurrency(periodNet)}</span>
-                </div>
-            `;
-
-            document.getElementById('periodModalBody').innerHTML = bodyHtml;
-
-            document.getElementById('periodModalOverlay').classList.add('active');
-            document.getElementById('periodModal').classList.add('active');
-        }
-
-        function closePeriodModal() {
-            document.getElementById('periodModalOverlay').classList.remove('active');
-            document.getElementById('periodModal').classList.remove('active');
-        }
-
-        function setupPeriodModalListeners() {
-            document.querySelectorAll('.period-item[data-period]').forEach(item => {
-                item.addEventListener('click', () => {
-                    const period = item.dataset.period;
-                    if (period) {
-                        showPeriodModal(period);
-                    }
-                });
+            // Update donut chart with period values
+            updateDonutChart({
+                gross: periodGross,
+                tax: periodTax,
+                ni: periodNI,
+                pension: periodPension,
+                pensionEnabled,
+                studentLoan: periodStudentLoan,
+                studentLoanEnabled,
+                net: net / divisor
             });
 
-            document.getElementById('periodModalClose').addEventListener('click', closePeriodModal);
-            document.getElementById('periodModalOverlay').addEventListener('click', closePeriodModal);
-
-            // Close on Escape key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closePeriodModal();
-                }
+            // Update breakdown list
+            updateBreakdownList({
+                gross: periodGross,
+                tax: periodTax,
+                ni: periodNI,
+                pension: periodPension,
+                pensionEnabled,
+                studentLoan: periodStudentLoan,
+                studentLoanEnabled
             });
+
+            // Update tax bands with period values
+            const periodBreakdown = taxBreakdown.map(band => ({
+                ...band,
+                amount: band.amount / divisor,
+                tax: band.tax / divisor
+            }));
+            updateTaxBands(periodBreakdown, periodGross);
+        }
+
+        function getDivisor(period) {
+            const divisors = { yearly: 1, monthly: 12, weekly: 52, daily: 260 };
+            return divisors[period] || 1;
+        }
+
+        function getPeriodText(period) {
+            const texts = { yearly: 'per year', monthly: 'per month', weekly: 'per week', daily: 'per day' };
+            return texts[period] || 'per year';
         }
 
         function init() {
             setupEventListeners();
-            setupPeriodModalListeners();
+            setupPeriodSelector();
 
             elements.salary.value = '50,000';
             document.getElementById('compareASalary').value = '50,000';
@@ -3341,26 +3225,5 @@
 
         document.addEventListener('DOMContentLoaded', init);
     </script>
-
-    <!-- Period Detail Modal -->
-    <div id="periodModalOverlay" class="period-modal-overlay"></div>
-    <div id="periodModal" class="period-modal">
-        <div class="period-modal-header">
-            <span class="period-modal-title" id="periodModalTitle">Monthly Breakdown</span>
-            <button class="period-modal-close" id="periodModalClose">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-        <div class="period-modal-net">
-            <div class="period-modal-net-label">Take Home Pay</div>
-            <div class="period-modal-net-value" id="periodModalNet">£0</div>
-        </div>
-        <div class="period-modal-body" id="periodModalBody">
-            <!-- Rows will be populated dynamically -->
-        </div>
-    </div>
 </body>
 </html>
