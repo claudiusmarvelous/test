@@ -357,9 +357,18 @@
             border-radius: var(--radius-sm);
         }
 
+        /* Salary Input Period Toggle */
+        .salary-period-toggle {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 2px;
+        }
+
         .period-btn {
             flex: 1;
-            padding: 10px 14px;
+            padding: 10px 12px;
             font-size: 13px;
             font-weight: 500;
             font-family: inherit;
@@ -378,7 +387,7 @@
         .period-btn.active {
             background: white;
             color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
 
         /* Select */
@@ -1471,10 +1480,11 @@
                             <input type="text" id="salary" class="salary-input" placeholder="50,000" inputmode="numeric">
                         </div>
 
-                        <div class="period-selector">
+                        <div class="salary-period-toggle">
                             <button type="button" class="period-btn active" data-period="yearly">Yearly</button>
                             <button type="button" class="period-btn" data-period="monthly">Monthly</button>
                             <button type="button" class="period-btn" data-period="weekly">Weekly</button>
+                            <button type="button" class="period-btn" data-period="daily">Daily</button>
                         </div>
 
                         <div class="accordion" style="margin-top: 28px;">
@@ -1649,7 +1659,27 @@
                                                 <input type="text" id="bonus" class="input-field has-prefix" placeholder="0" inputmode="numeric">
                                             </div>
                                         </div>
-                                        <div class="input-group">
+                                        <div class="toggle-row" style="margin-top: 14px;">
+                                            <div>
+                                                <div class="toggle-label">Sacrifice bonus to pension</div>
+                                                <div class="toggle-sublabel">Reduce tax & NI on your bonus</div>
+                                            </div>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="bonusSacrificeEnabled">
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                        </div>
+                                        <div id="bonusSacrificeOptions" style="display: none;">
+                                            <div class="inline-input-group" style="margin-top: 12px;">
+                                                <span class="inline-label">Sacrifice amount:</span>
+                                                <input type="text" id="bonusSacrificeAmount" class="inline-input" value="100" placeholder="100">
+                                                <select id="bonusSacrificeType" class="inline-select">
+                                                    <option value="percentage">% of bonus</option>
+                                                    <option value="fixed">£ fixed amount</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" style="margin-top: 16px;">
                                             <label class="input-label">Monthly Overtime</label>
                                             <div class="input-wrapper">
                                                 <span class="input-prefix">£</span>
@@ -1677,30 +1707,6 @@
                         <div class="period-option" data-period="monthly">Monthly</div>
                         <div class="period-option" data-period="weekly">Weekly</div>
                         <div class="period-option" data-period="daily">Daily</div>
-                    </div>
-
-                    <!-- Pension Summary -->
-                    <div id="pensionSummary" class="pension-summary" style="display: none;">
-                        <div class="pension-summary-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4"/>
-                            </svg>
-                            Annual Pension Contributions
-                        </div>
-                        <div class="pension-summary-grid">
-                            <div class="pension-summary-item">
-                                <div class="pension-summary-label">Your Contribution</div>
-                                <div class="pension-summary-value" id="yourPensionDisplay">£0</div>
-                            </div>
-                            <div class="pension-summary-item">
-                                <div class="pension-summary-label">Employer Contribution</div>
-                                <div class="pension-summary-value employer" id="employerPensionDisplay">£0</div>
-                            </div>
-                            <div class="pension-summary-item pension-summary-total">
-                                <div class="pension-summary-label">Total into Pension Pot</div>
-                                <div class="pension-total-value" id="totalPensionDisplay">£0</div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="breakdown-list">
@@ -1810,6 +1816,34 @@
                     <div id="taxCodeNotice" class="notice notice-info" style="display: none;">
                         <div class="notice-title">Tax Code Applied</div>
                         <div class="notice-text" id="taxCodeText"></div>
+                    </div>
+
+                    <!-- Pension Summary -->
+                    <div id="pensionSummary" class="pension-summary" style="display: none;">
+                        <div class="pension-summary-title">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4"/>
+                            </svg>
+                            Annual Pension Contributions
+                        </div>
+                        <div class="pension-summary-grid">
+                            <div class="pension-summary-item">
+                                <div class="pension-summary-label">Your Contribution</div>
+                                <div class="pension-summary-value" id="yourPensionDisplay">£0</div>
+                            </div>
+                            <div class="pension-summary-item" id="bonusSacrificeRow" style="display: none;">
+                                <div class="pension-summary-label">Bonus Sacrifice</div>
+                                <div class="pension-summary-value" id="bonusSacrificeDisplay">£0</div>
+                            </div>
+                            <div class="pension-summary-item">
+                                <div class="pension-summary-label">Employer Contribution</div>
+                                <div class="pension-summary-value employer" id="employerPensionDisplay">£0</div>
+                            </div>
+                            <div class="pension-summary-item pension-summary-total">
+                                <div class="pension-summary-label">Total into Pension Pot</div>
+                                <div class="pension-total-value" id="totalPensionDisplay">£0</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2102,6 +2136,10 @@
             blindAllowance: document.getElementById('blindAllowance'),
             noNI: document.getElementById('noNI'),
             bonus: document.getElementById('bonus'),
+            bonusSacrificeEnabled: document.getElementById('bonusSacrificeEnabled'),
+            bonusSacrificeOptions: document.getElementById('bonusSacrificeOptions'),
+            bonusSacrificeAmount: document.getElementById('bonusSacrificeAmount'),
+            bonusSacrificeType: document.getElementById('bonusSacrificeType'),
             overtime: document.getElementById('overtime'),
             takeHomeAmount: document.getElementById('takeHomeAmount'),
             takeHomePeriod: document.getElementById('takeHomePeriod'),
@@ -2127,6 +2165,8 @@
             taxCodeText: document.getElementById('taxCodeText'),
             pensionSummary: document.getElementById('pensionSummary'),
             yourPensionDisplay: document.getElementById('yourPensionDisplay'),
+            bonusSacrificeRow: document.getElementById('bonusSacrificeRow'),
+            bonusSacrificeDisplay: document.getElementById('bonusSacrificeDisplay'),
             employerPensionDisplay: document.getElementById('employerPensionDisplay'),
             totalPensionDisplay: document.getElementById('totalPensionDisplay'),
             donutDetail: document.getElementById('donutDetail'),
@@ -2463,6 +2503,19 @@
                 salary *= 12;
             } else if (currentPeriod === 'weekly') {
                 salary *= 52;
+            } else if (currentPeriod === 'daily') {
+                salary *= 260; // 260 working days per year
+            }
+
+            // Calculate bonus sacrifice amount
+            let bonusSacrificeAmount = 0;
+            if (elements.bonusSacrificeEnabled.checked && bonus > 0) {
+                const sacrificeValue = parseFloat(elements.bonusSacrificeAmount.value) || 0;
+                if (elements.bonusSacrificeType.value === 'percentage') {
+                    bonusSacrificeAmount = Math.min(bonus, bonus * (sacrificeValue / 100));
+                } else {
+                    bonusSacrificeAmount = Math.min(bonus, sacrificeValue);
+                }
             }
 
             const grossIncome = salary + bonus + (overtime * 12);
@@ -2484,6 +2537,10 @@
                 elements.salarySacrifice.checked
             );
 
+            // Add bonus sacrifice to pension total
+            pensionConfig.bonusSacrifice = bonusSacrificeAmount;
+            pensionConfig.total += bonusSacrificeAmount;
+
             // Taxable income after salary sacrifice
             let taxableIncome = grossIncome;
             let niableIncome = grossIncome;
@@ -2491,6 +2548,12 @@
             if (pensionConfig.salarySacrifice && pensionConfig.employee > 0) {
                 taxableIncome -= pensionConfig.employee;
                 niableIncome -= pensionConfig.employee;
+            }
+
+            // Deduct bonus sacrifice from taxable and NI-able income
+            if (bonusSacrificeAmount > 0) {
+                taxableIncome -= bonusSacrificeAmount;
+                niableIncome -= bonusSacrificeAmount;
             }
 
             // Handle K codes (add to taxable income)
@@ -2580,11 +2643,22 @@
             });
 
             // Pension summary (always show annual)
-            if (pensionEnabled && pension.employee > 0) {
+            const hasPensionContrib = pensionEnabled && pension.employee > 0;
+            const hasBonusSacrifice = pension.bonusSacrifice > 0;
+
+            if (hasPensionContrib || hasBonusSacrifice) {
                 elements.pensionSummary.style.display = 'block';
                 elements.yourPensionDisplay.textContent = formatCurrency(pension.employee);
                 elements.employerPensionDisplay.textContent = formatCurrency(pension.employer);
                 elements.totalPensionDisplay.textContent = formatCurrency(pension.total);
+
+                // Show bonus sacrifice row if applicable
+                if (hasBonusSacrifice) {
+                    elements.bonusSacrificeRow.style.display = 'block';
+                    elements.bonusSacrificeDisplay.textContent = formatCurrency(pension.bonusSacrifice);
+                } else {
+                    elements.bonusSacrificeRow.style.display = 'none';
+                }
             } else {
                 elements.pensionSummary.style.display = 'none';
             }
@@ -3047,6 +3121,12 @@
                 calculate();
             });
 
+            // Bonus sacrifice toggle
+            elements.bonusSacrificeEnabled.addEventListener('change', () => {
+                elements.bonusSacrificeOptions.style.display = elements.bonusSacrificeEnabled.checked ? 'block' : 'none';
+                calculate();
+            });
+
             // Tax year selector
             elements.taxYearSelect.addEventListener('change', (e) => {
                 currentTaxYear = e.target.value;
@@ -3068,6 +3148,8 @@
                 elements.blindAllowance,
                 elements.noNI,
                 elements.bonus,
+                elements.bonusSacrificeAmount,
+                elements.bonusSacrificeType,
                 elements.overtime
             ].filter(el => el);
 
